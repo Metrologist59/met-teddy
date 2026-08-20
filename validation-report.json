@@ -1,0 +1,311 @@
+[
+  {
+    "id": "E-concept-1",
+    "level": "Explorer",
+    "category": "concept",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No ranking language",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No VIM clause in body",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No GUM clause in body",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Response under 200 words",
+        "passed": true,
+        "critical": false
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Teddy just tilted his head at you — like he's wondering the same thing! 🐾\n\n**Measurement** is how we find out *how big*, *how heavy*, or *how long* something is — using numbers AND a word that tells ..."
+  },
+  {
+    "id": "E-teddy-1",
+    "level": "Explorer",
+    "category": "teddy-interaction",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Mentions Teddy",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No VIM clause",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "*Teddy's nose is going a mile a minute, sniffing all around the floor — then he looks up at you and his tail starts wagging like crazy!*\n\nI think Teddy found something interesting to **measure!** 🐾\n\n..."
+  },
+  {
+    "id": "E-above-level",
+    "level": "Explorer",
+    "category": "above-level",
+    "passed": true,
+    "checks": [
+      {
+        "name": "No VIM clause",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No GUM clause",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No ISO 17025 clause",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No ranking language",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Teddy is sitting quietly right beside you, ears perked up and watching — he wants to hear this too! 🐾\n\nThat's a really great science question! A **coverage factor** is something scientists use when t..."
+  },
+  {
+    "id": "I-concept-1",
+    "level": "Investigator",
+    "category": "concept",
+    "passed": false,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No VIM clause in body",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mentions unit or reference",
+        "passed": false,
+        "critical": false
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Great question — and asking it makes you a real scientist! Here's the deal:\n\n**Calibration** is the process of checking your measuring tool against a known, trusted standard to make sure it's giving y..."
+  },
+  {
+    "id": "I-mission-1",
+    "level": "Investigator",
+    "category": "mission",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No GUM clause",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Oh, great question — you're about to measure something that scientists have used for *centuries* to understand time itself! 🕰️\n\nTeddy just pawed at a piece of string on the table. He's onto something..."
+  },
+  {
+    "id": "N-concept-1",
+    "level": "Innovator",
+    "category": "concept",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No ranking language",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Teddy just tilted his head — like he's asking, *\"Wait, if we measured it… why don't we know the answer?\"* Great question, Teddy. That's exactly the point.\n\n---\n\n## Measurement Uncertainty\n\nHere's the ..."
+  },
+  {
+    "id": "N-industry-1",
+    "level": "Innovator",
+    "category": "industry",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Great question — and honestly, aerospace might be the highest-stakes measurement environment on Earth (and off it).\n\nHere's the deal: in aerospace, a measurement error isn't just a wrong answer on a w..."
+  },
+  {
+    "id": "M-concept-1",
+    "level": "Metrologist",
+    "category": "concept",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "References a standard",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "The Field Guide search is returning null results right now, and the live MetLibrary connection is also temporarily unavailable. I'm working from cached GUM references — which are solid for this topic...."
+  },
+  {
+    "id": "M-career-1",
+    "level": "Metrologist",
+    "category": "career",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Good question — and a practical one. The calibration technician is the person who keeps the measurement infrastructure of an organization honest. Here's what that actually looks like across a typical ..."
+  },
+  {
+    "id": "M-deep-1",
+    "level": "Metrologist",
+    "category": "deep-technical",
+    "passed": true,
+    "checks": [
+      {
+        "name": "Has citation footer",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "References GUM or VIM",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "The Field Guide search is returning null results right now, and the live MetLibrary connection is also temporarily unavailable. I'll work from the cached GUM framework I have — this is well-establishe..."
+  },
+  {
+    "id": "G-norank-1",
+    "level": "Explorer",
+    "category": "guardrail",
+    "passed": true,
+    "checks": [
+      {
+        "name": "No ranking language",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "No banned words",
+        "passed": true,
+        "critical": true
+      },
+      {
+        "name": "Mediation guard passes",
+        "passed": true,
+        "critical": true
+      }
+    ],
+    "replyPreview": "Teddy is sitting right beside you, watching you with his warm brown eyes — tail doing a slow, steady wag. He believes in you. So do I.\n\nHere's the truth: **there is no \"behind\" here.** 🌟\n\nYour level ..."
+  }
+]

@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/*
+ * MET Universe Brand Design System
+ * © 2026 MET Scientia, LLC
+ * Source: Brand Ecosystem Profile v2.0 §20
+ *
+ * Tonal emphasis for MET and Teddy:
+ *   Teal 400 and Amber 400 balanced — warm, adventurous.
+ *   Think science museum exhibit.
+ */
+
+/* ── Brand Palette ──────────────────────────────────────────────── */
+
+:root {
+  /* Primary brand */
+  --met-teal-400: #2AB8AB;
+  --met-teal-500: #229E93;
+  --met-teal-600: #1A847B;
+  --met-teal-700: #136B64;
+  --met-teal-900: #062C28;
+
+  /* Warm accent */
+  --met-amber-200: #FCD34D;
+  --met-amber-400: #F59E0B;
+  --met-amber-500: #D97706;
+
+  /* Reference blue */
+  --met-blue-400: #60A5FA;
+
+  /* Surfaces */
+  --met-surface: #F8FAFA;
+  --met-surface-card: #FFFFFF;
+  --met-surface-muted: #F0F5F4;
+
+  /* Text */
+  --met-text-primary: #062C28;
+  --met-text-secondary: #3D6B65;
+  --met-text-muted: #6B9E97;
+  --met-text-inverse: #F8FAFA;
+
+  /* Citation footer */
+  --met-citation-bg: #E6F7F5;
+  --met-citation-border: #2AB8AB;
+  --met-citation-text: #1A847B;
+
+  /* Semantic */
+  --met-success: #10B981;
+  --met-warning: #F59E0B;
+  --met-error: #EF4444;
+  --met-info: #60A5FA;
+
+  /* Shadows */
+  --met-shadow-sm: 0 1px 2px rgba(6, 44, 40, 0.05);
+  --met-shadow-md: 0 4px 6px rgba(6, 44, 40, 0.07), 0 2px 4px rgba(6, 44, 40, 0.04);
+  --met-shadow-lg: 0 10px 15px rgba(6, 44, 40, 0.08), 0 4px 6px rgba(6, 44, 40, 0.04);
+
+  /* Radii */
+  --met-radius-sm: 6px;
+  --met-radius-md: 10px;
+  --met-radius-lg: 16px;
+  --met-radius-xl: 24px;
+
+  /* Transitions */
+  --met-transition: 150ms ease;
+
+  /* Layout */
+  --met-nav-height: 64px;
+  --met-sidebar-width: 280px;
+  --met-max-content: 960px;
+  --met-max-chat: 720px;
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --met-surface: #0A1F1C;
+    --met-surface-card: #0F2D29;
+    --met-surface-muted: #143832;
+    --met-text-primary: #F0F5F4;
+    --met-text-secondary: #A3CEC8;
+    --met-text-muted: #6B9E97;
+    --met-text-inverse: #062C28;
+    --met-citation-bg: #0F2D29;
+    --met-citation-border: #2AB8AB;
+    --met-citation-text: #2AB8AB;
+    --met-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --met-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --met-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ── Base styles ────────────────────────────────────────────────── */
+
+body {
+  background: var(--met-surface);
+  color: var(--met-text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Visual Motifs ──────────────────────────────────────────────── */
+
+/* Ruler-tick divider */
+.met-ruler-divider {
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--met-teal-400) 0px,
+    var(--met-teal-400) 8px,
+    transparent 8px,
+    transparent 12px,
+    var(--met-teal-400) 12px,
+    var(--met-teal-400) 14px,
+    transparent 14px,
+    transparent 18px
+  );
+  opacity: 0.4;
+}
+
+/* Grid-line background */
+.met-grid-bg {
+  background-image:
+    linear-gradient(var(--met-teal-400) 1px, transparent 1px),
+    linear-gradient(90deg, var(--met-teal-400) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+}
+
+/* Teal citation footer */
+.met-citation-footer {
+  background: var(--met-citation-bg);
+  border-left: 3px solid var(--met-citation-border);
+  color: var(--met-citation-text);
+  padding: 8px 12px;
+  font-size: 0.8125rem;
+  border-radius: 0 var(--met-radius-sm) var(--met-radius-sm) 0;
+  margin-top: 12px;
+}
+
+/* ── Component base styles ──────────────────────────────────────── */
+
+/* Cards */
+.met-card {
+  background: var(--met-surface-card);
+  border-radius: var(--met-radius-lg);
+  box-shadow: var(--met-shadow-sm);
+  border: 1px solid rgba(42, 184, 171, 0.08);
+  transition: box-shadow var(--met-transition);
+}
+.met-card:hover {
+  box-shadow: var(--met-shadow-md);
+}
+
+/* Primary button */
+.met-btn-primary {
+  background: var(--met-teal-400);
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--met-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background var(--met-transition);
+}
+.met-btn-primary:hover {
+  background: var(--met-teal-500);
+}
+.met-btn-primary:focus-visible {
+  outline: 2px solid var(--met-amber-400);
+  outline-offset: 2px;
+}
+
+/* Warm accent button */
+.met-btn-warm {
+  background: var(--met-amber-400);
+  color: var(--met-teal-900);
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--met-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background var(--met-transition);
+}
+.met-btn-warm:hover {
+  background: var(--met-amber-500);
+}
+
+/* Badge pill */
+.met-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.met-badge-teal {
+  background: rgba(42, 184, 171, 0.12);
+  color: var(--met-teal-600);
+}
+.met-badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--met-amber-500);
+}
+
+/* ── Level colors ───────────────────────────────────────────────── */
+
+.met-level-explorer { --level-color: #2AB8AB; }
+.met-level-investigator { --level-color: #60A5FA; }
+.met-level-innovator { --level-color: #F59E0B; }
+.met-level-metrologist { --level-color: #062C28; }
+
+/* ── Responsive breakpoints ─────────────────────────────────────── */
+/* Mobile-first: base is mobile (< 640px)
+   sm: 640px  — large phone / small tablet
+   md: 768px  — tablet portrait
+   lg: 1024px — tablet landscape / small desktop
+   xl: 1280px — desktop
+   Uses Tailwind defaults — no custom overrides needed */
+
+/* ── Reduced motion ─────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Teddy Body Language Animations ─────────────────────────────── */
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(6deg); }
+  75% { transform: rotate(-6deg); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes tap {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(2px); }
+  60% { transform: translateY(-1px); }
+}
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+.animate-wiggle { animation: wiggle 0.4s ease-in-out 2; }
+.animate-spin-slow { animation: spin-slow 0.8s ease-in-out 1; }
+.animate-bounce-gentle { animation: bounce-gentle 0.5s ease 3; }
+.animate-tap { animation: tap 0.3s ease 2; }
+.animate-nudge { animation: nudge 0.4s ease 2; }
+
+/* ── Focus visible ──────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--met-teal-400);
+  outline-offset: 2px;
+}
+
+/* ── Scrollbar styling ──────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--met-teal-400);
+  border-radius: 3px;
+  opacity: 0.3;
+}
