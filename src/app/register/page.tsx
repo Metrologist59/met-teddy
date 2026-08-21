@@ -1,21 +1,31 @@
 // src/app/register/page.tsx
-// Registration page with COPPA-compliant age gating.
+// Registration page with COPPA-compliant age gating, EULA acceptance,
+// and email-confirmation handoff.
+//
+// Account creation is entirely server-side (see /api/register) — this
+// page only collects input and displays state. It never calls
+// supabase.auth.signUp() itself and never learns a user id: the
+// server derives role from flow, stamps timestamps, and creates the
+// profile using the service-role client, since the registering user
+// has no session until they confirm their email.
 
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { AgeGate } from "@/components/auth/AgeGate"
-import { createBrowserSupabaseClient } from "@/lib/supabase/client"
+import { TermsAcceptance } from "@/components/auth/TermsAcceptance"
+import { ParentalConsentForm } from "@/components/auth/ParentalConsentForm"
+import { EULA_VERSION, PRIVACY_VERSION } from "@/lib/legal"
 
 type Flow = "parent_led" | "educator_led" | "self_led"
-type Step = "age_gate" | "register" | "complete"
+type Step = "age_gate" | "terms" | "form" | "consent" | "check_email"
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [step, setStep] = useState<Step>("age_gate")
   const [flow, setFlow] = useState<Flow | null>(null)
   const [grade, setGrade] = useState<number>(0)
+
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   // Form fields
   const [firstName, setFirstName] = useState("")
@@ -25,112 +35,95 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [childFirstName, setChildFirstName] = useState("")
   const [schoolName, setSchoolName] = useState("")
-  const [consentChecked, setConsentChecked] = useState(false)
 
   // State
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [sentEmail, setSentEmail] = useState("")
 
   function handleAgeGateResult(result: { isUnder13: boolean; grade: number; flow: Flow }) {
     setFlow(result.flow)
     setGrade(result.grade)
-    setStep("register")
+    setStep("terms")
   }
 
-  async function handleSubmit() {
+  function handleTermsContinue() {
+    setError(null)
+    if (!termsAccepted) {
+      setError("Please accept the Terms of Service and Privacy Policy to continue.")
+      return
+    }
+    setStep("form")
+  }
+
+  function validateForm(): string | null {
+    if (!email || !password) return "Email and password are required."
+    if (password.length < 8) return "Password must be at least 8 characters."
+    if (password !== confirmPassword) return "Passwords do not match."
+    if (!firstName.trim()) return "First name is required."
+    if (flow === "parent_led" && !childFirstName.trim()) return "Please enter your child's first name."
+    return null
+  }
+
+  function handleFormContinue() {
+    setError(null)
+    const validationError = validateForm()
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+    if (flow === "parent_led") {
+      setStep("consent")
+    } else {
+      submitRegistration()
+    }
+  }
+
+  async function submitRegistration() {
+    setLoading(true)
     setError(null)
 
-    // Validation
-    if (!email || !password) {
-      setError("Email and password are required.")
-      return
-    }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.")
-      return
-    }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.")
-      return
-    }
-    if (flow === "parent_led" && !childFirstName.trim()) {
-      setError("Please enter your child's first name.")
-      return
-    }
-    if (flow === "parent_led" && !consentChecked) {
-      setError("Parental consent is required for students under 13.")
-      return
-    }
-    if (!firstName.trim()) {
-      setError("First name is required.")
-      return
-    }
-
-    setLoading(true)
-
     try {
-      // 1. Supabase auth signup
-      const supabase = createBrowserSupabaseClient()
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            role: flow === "parent_led" ? "parent" : flow === "educator_led" ? "educator" : "student",
-          },
-        },
-      })
-
-      if (authError) {
-        setError(authError.message)
-        setLoading(false)
-        return
-      }
-
-      if (!authData.user) {
-        setError("Account creation failed. Please try again.")
-        setLoading(false)
-        return
-      }
-
-      // 2. Create profile via API route
-      const profileRes = await fetch("/api/register", {
+      const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           flow,
-          userId: authData.user.id,
           email,
+          password,
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           grade,
           childFirstName: childFirstName.trim(),
           schoolName: schoolName.trim(),
+          eulaAccepted: true,
+          eulaVersion: EULA_VERSION,
+          privacyAccepted: true,
+          privacyVersion: PRIVACY_VERSION,
         }),
       })
 
-      const profileData = await profileRes.json()
+      const data = await res.json()
 
-      if (!profileRes.ok) {
-        setError(profileData.error || "Profile creation failed.")
+      if (!res.ok) {
+        setError(data.error || "Registration failed. Please try again.")
         setLoading(false)
+        setStep(flow === "parent_led" ? "consent" : "form")
         return
       }
 
-      // 3. Success — redirect
-      setStep("complete")
-      setTimeout(() => {
-        if (flow === "educator_led") {
-          router.push("/dashboard")
-        } else {
-          router.push("/onboarding")
-        }
-      }, 2000)
-    } catch (err) {
+      setSentEmail(data.email ?? email)
+      setLoading(false)
+      setStep("check_email")
+    } catch {
       setError("Something went wrong. Please try again.")
       setLoading(false)
+      setStep(flow === "parent_led" ? "consent" : "form")
     }
+  }
+
+  function handleConsent() {
+    submitRegistration()
   }
 
   const inputStyle = {
@@ -165,13 +158,34 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* Registration Form */}
-        {step === "register" && flow && (
+        {/* Terms Acceptance */}
+        {step === "terms" && (
           <div className="met-card p-6">
-            <h2
-              className="text-lg font-semibold mb-1"
-              style={{ color: "var(--met-text-primary)" }}
+            <TermsAcceptance checked={termsAccepted} onChange={setTermsAccepted} />
+
+            {error && (
+              <div
+                className="mt-4 px-4 py-3 rounded-lg text-sm"
+                style={{ background: "rgba(239, 68, 68, 0.1)", color: "#EF4444", border: "1px solid rgba(239, 68, 68, 0.2)" }}
+              >
+                {error}
+              </div>
+            )}
+
+            <button
+              onClick={handleTermsContinue}
+              className="w-full mt-6 py-3 rounded-lg text-sm font-semibold transition-opacity"
+              style={{ background: "var(--met-teal-400)", color: "white" }}
             >
+              Continue
+            </button>
+          </div>
+        )}
+
+        {/* Registration Form */}
+        {step === "form" && flow && (
+          <div className="met-card p-6">
+            <h2 className="text-lg font-semibold mb-1" style={{ color: "var(--met-text-primary)" }}>
               {flow === "parent_led" && "Parent Registration"}
               {flow === "educator_led" && "Educator Registration"}
               {flow === "self_led" && "Student Registration"}
@@ -297,25 +311,6 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* COPPA consent checkbox (parent-led only) */}
-              {flow === "parent_led" && (
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={consentChecked}
-                    onChange={(e) => setConsentChecked(e.target.checked)}
-                    className="mt-1 w-4 h-4 accent-[#2AB8AB]"
-                  />
-                  <span className="text-sm" style={{ color: "var(--met-text-secondary)" }}>
-                    I am the parent or legal guardian of this child. I consent to the
-                    collection and use of my child&apos;s information as described in the{" "}
-                    <a href="/privacy" className="underline" style={{ color: "var(--met-teal-400)" }}>
-                      Privacy Policy
-                    </a>.
-                  </span>
-                </label>
-              )}
-
               {/* Error message */}
               {error && (
                 <div
@@ -330,9 +325,9 @@ export default function RegisterPage() {
                 </div>
               )}
 
-              {/* Submit button */}
+              {/* Continue / Submit button */}
               <button
-                onClick={handleSubmit}
+                onClick={handleFormContinue}
                 disabled={loading}
                 className="w-full py-3 rounded-lg text-sm font-semibold transition-opacity disabled:opacity-50"
                 style={{
@@ -340,29 +335,55 @@ export default function RegisterPage() {
                   color: "white",
                 }}
               >
-                {loading ? "Creating account..." : "Create Account"}
+                {loading ? "Creating account..." : flow === "parent_led" ? "Continue" : "Create Account"}
               </button>
             </div>
           </div>
         )}
 
-        {/* Success */}
-        {step === "complete" && (
+        {/* Parental Consent (parent-led only) */}
+        {step === "consent" && flow === "parent_led" && (
+          <div className="met-card p-6">
+            <ParentalConsentForm studentFirstName={childFirstName.trim() || "your child"} onConsent={handleConsent} />
+
+            {error && (
+              <div
+                className="mt-4 px-4 py-3 rounded-lg text-sm"
+                style={{ background: "rgba(239, 68, 68, 0.1)", color: "#EF4444", border: "1px solid rgba(239, 68, 68, 0.2)" }}
+              >
+                {error}
+              </div>
+            )}
+            {loading && (
+              <p className="mt-4 text-sm text-center" style={{ color: "var(--met-text-muted)" }}>
+                Creating account...
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Check your email */}
+        {step === "check_email" && (
           <div className="met-card p-6 text-center">
-            <div className="text-4xl mb-4">🎉</div>
+            <div className="text-4xl mb-4">📬</div>
             <h2 className="text-lg font-semibold mb-2" style={{ color: "var(--met-text-primary)" }}>
-              Welcome to MET Universe!
+              Check your email
             </h2>
-            <p className="text-sm" style={{ color: "var(--met-text-muted)" }}>
-              {flow === "educator_led"
-                ? "Setting up your dashboard..."
-                : "Let\u2019s get you started with MET and Teddy..."}
+            <p className="text-sm mb-2" style={{ color: "var(--met-text-muted)" }}>
+              We sent a confirmation link to <strong>{sentEmail}</strong>. Click it
+              to activate your account.
             </p>
+            {flow === "parent_led" && (
+              <p className="text-sm" style={{ color: "var(--met-text-muted)" }}>
+                Confirming your email also verifies your parental consent —
+                that&apos;s all that&apos;s needed for {childFirstName.trim() || "your child"} to get started.
+              </p>
+            )}
           </div>
         )}
 
         {/* Login link */}
-        {step !== "complete" && (
+        {step !== "check_email" && (
           <p
             className="text-center mt-6 text-sm"
             style={{ color: "var(--met-text-muted)" }}

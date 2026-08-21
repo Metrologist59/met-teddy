@@ -39,7 +39,12 @@ check("Onboarding page",     fileExists("src/app/onboarding/page.tsx"))
 check("Register page",       fileExists("src/app/register/page.tsx"))
 check("Login page",          fileExists("src/app/login/page.tsx"))
 check("Privacy page",        fileExists("src/app/privacy/page.tsx"))
+check("Terms page",          fileExists("src/app/terms/page.tsx"))
+check("COPPA page",          fileExists("src/app/coppa/page.tsx"))
+check("Verify email page",   fileExists("src/app/verify-email/page.tsx"))
+check("Consent pending page", fileExists("src/app/consent-pending/page.tsx"))
 check("Auth callback",       fileExists("src/app/auth/callback/route.ts"))
+check("Auth confirm",        fileExists("src/app/auth/confirm/route.ts"))
 
 // ── API routes ───────────────────────────────────────────────────
 console.log("\n── API Routes ──")
@@ -98,6 +103,7 @@ check("CredentialExport",    fileExists("src/components/badges/CredentialExport.
 console.log("\n── Auth Components ──")
 check("AgeGate",             fileExists("src/components/auth/AgeGate.tsx"))
 check("ParentalConsentForm", fileExists("src/components/auth/ParentalConsentForm.tsx"))
+check("TermsAcceptance",     fileExists("src/components/auth/TermsAcceptance.tsx"))
 
 // ── Onboarding components ────────────────────────────────────────
 console.log("\n── Onboarding Components ──")
@@ -140,6 +146,17 @@ console.log("\n── Database Migrations ──")
 check("Auth profiles",       fileExists("supabase/migrations/0001_auth_profiles.sql"))
 check("Notebook tables",     fileExists("supabase/migrations/0002_notebook.sql"))
 check("Badge tables",        fileExists("supabase/migrations/0003_badges.sql"))
+check("Registration hardening", fileExists("supabase/migrations/0004_registration_hardening.sql"))
+
+// ── Auth / registration infrastructure ───────────────────────────
+console.log("\n── Auth Infrastructure ──")
+check("Admin Supabase client", fileExists("src/lib/supabase/admin.ts"))
+check("Legal versions",      fileExists("src/lib/legal.ts"))
+check("Email templates",     fileExists("src/lib/email.ts"))
+check("Request helpers",     fileExists("src/lib/http/request.ts"))
+check("Rate limit helper",   fileExists("src/lib/http/rateLimit.ts"))
+check("Finalize confirmation", fileExists("src/lib/auth/finalizeConfirmation.ts"))
+check("Registration metadata type", fileExists("src/lib/auth/registrationMetadata.ts"))
 
 // ── Documentation ────────────────────────────────────────────────
 console.log("\n── Documentation ──")
