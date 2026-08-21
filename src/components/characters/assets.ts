@@ -2,56 +2,55 @@
 // Asset registry for MET and Teddy character rendering.
 // © 2026 MET Scientia, LLC — all character assets are owned IP.
 //
-// PLACEHOLDER: Uses emoji representations until illustrated assets
-// are delivered. When real art is ready, update the URL fields and
-// set `type: "image"`. Zero code changes elsewhere.
+// Real character art delivered August 2026 via Canva AI.
+// SVGs served from public/characters/ as static files.
 
 import type { METExpression, TeddyBodyLanguage } from "./types"
 
 interface AssetEntry {
   type:    "emoji" | "image"
   emoji?:  string
-  url?:    string        // path to illustrated asset
+  url?:    string
   alt:     string
-  label:   string        // human-readable name
+  label:   string
 }
 
 // ── MET Expression Assets ────────────────────────────────────────
 
 export const MET_ASSETS: Record<METExpression, AssetEntry> = {
   caution: {
-    type: "emoji",
-    emoji: "✋",
+    type: "image",
+    url: "/characters/met-caution.svg",
     alt: "MET with hand raised in caution",
     label: "Caution",
   },
   encourage: {
-    type: "emoji",
-    emoji: "👍",
+    type: "image",
+    url: "/characters/met-encourage.svg",
     alt: "MET giving thumbs up",
     label: "Encourage",
   },
   guide: {
-    type: "emoji",
-    emoji: "👉",
-    alt: "MET pointing forward",
+    type: "image",
+    url: "/characters/met-guide.svg",
+    alt: "MET with caliper, hand open welcoming",
     label: "Guide",
   },
   explore: {
-    type: "emoji",
-    emoji: "🔬",
-    alt: "MET at whiteboard with diagrams",
+    type: "image",
+    url: "/characters/met-explore.svg",
+    alt: "MET with Field Guide and caliper ready to explore",
     label: "Explore",
   },
   playful: {
-    type: "emoji",
-    emoji: "😄",
-    alt: "MET smiling, relaxed",
+    type: "image",
+    url: "/characters/met-playful.svg",
+    alt: "MET kicked back, pointing playfully",
     label: "Playful",
   },
   neutral: {
-    type: "emoji",
-    emoji: "🧑‍🔬",
+    type: "image",
+    url: "/characters/met-guide.svg",
     alt: "MET in default pose",
     label: "Neutral",
   },
@@ -61,69 +60,69 @@ export const MET_ASSETS: Record<METExpression, AssetEntry> = {
 
 export const TEDDY_ASSETS: Record<TeddyBodyLanguage, AssetEntry> = {
   tail_wag: {
-    type: "emoji",
-    emoji: "🐕",
-    alt: "Teddy wagging his tail",
+    type: "image",
+    url: "/characters/teddy-happy.svg",
+    alt: "Teddy wagging his tail excitedly",
     label: "Tail Wag",
   },
   head_tilt: {
-    type: "emoji",
-    emoji: "🐶",
-    alt: "Teddy tilting his head",
+    type: "image",
+    url: "/characters/teddy-curious.svg",
+    alt: "Teddy tilting his head curiously",
     label: "Head Tilt",
   },
   pawing: {
-    type: "emoji",
-    emoji: "🐾",
-    alt: "Teddy pawing at something",
+    type: "image",
+    url: "/characters/teddy-encourage.svg",
+    alt: "Teddy with paw raised",
     label: "Pawing",
   },
   sniffing: {
-    type: "emoji",
-    emoji: "👃",
-    alt: "Teddy sniffing around",
+    type: "image",
+    url: "/characters/teddy-explore.svg",
+    alt: "Teddy sniffing and exploring",
     label: "Sniffing",
   },
   barking: {
-    type: "emoji",
-    emoji: "🐕‍🦺",
-    alt: "Teddy barking excitedly",
+    type: "image",
+    url: "/characters/teddy-alert.svg",
+    alt: "Teddy barking, ears perked",
     label: "Barking",
   },
   sitting: {
-    type: "emoji",
-    emoji: "🦮",
+    type: "image",
+    url: "/characters/teddy-curious.svg",
     alt: "Teddy sitting attentively",
     label: "Sitting",
   },
   paws_over_nose: {
-    type: "emoji",
-    emoji: "🙈",
-    alt: "Teddy covering his nose with paws",
-    label: "Embarrassed",
+    type: "image",
+    url: "/characters/teddy-confused.svg",
+    alt: "Teddy confused, paw to chin",
+    label: "Confused",
   },
   spinning: {
-    type: "emoji",
-    emoji: "💫",
-    alt: "Teddy spinning in circles",
+    type: "image",
+    url: "/characters/teddy-spinning.svg",
+    alt: "Teddy spinning in circles with joy",
     label: "Spinning",
   },
   nudging: {
-    type: "emoji",
-    emoji: "🐕",
-    alt: "Teddy nudging with nose",
+    type: "image",
+    url: "/characters/teddy-guide.svg",
+    alt: "Teddy trotting forward, nudging along",
     label: "Nudging",
   },
   standing_proud: {
-    type: "emoji",
-    emoji: "🏆",
-    alt: "Teddy standing tall and proud",
+    type: "image",
+    url: "/characters/teddy-celebrate.svg",
+    alt: "Teddy standing proud, both paws up",
     label: "Standing Proud",
   },
   sleeping: {
-    type: "emoji",
-    emoji: "😴",
-    alt: "Teddy sleeping nearby",
+    type: "image",
+    url: "/characters/teddy-curious.svg",
+    alt: "Teddy resting quietly nearby",
     label: "Sleeping",
   },
   hidden: {
