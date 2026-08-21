@@ -10,6 +10,7 @@ import { NextResponse, type NextRequest } from "next/server"
 
 const PUBLIC_EXACT = new Set([
   "/", "/login", "/register", "/coppa", "/privacy", "/terms", "/verify-email",
+  "/consent-pending",
 ])
 // /auth/callback and /auth/confirm must be reachable with no session —
 // that's the whole point of a confirmation link. Previously omitted,
@@ -17,6 +18,7 @@ const PUBLIC_EXACT = new Set([
 // code was never exchanged.
 const PUBLIC_PREFIXES = ["/auth/"]
 const PUBLIC_API = new Set(["/api/health", "/api/register"])
+
 
 export async function updateSession(request: NextRequest) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
