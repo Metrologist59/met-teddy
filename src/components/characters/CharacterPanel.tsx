@@ -1,11 +1,14 @@
 // src/components/characters/CharacterPanel.tsx
 // Combined MET and Teddy character panel.
 // Handles prominence scaling, expression states, and layout.
+// When MET expression is a duo asset (isDuo), Teddy is already in
+// the image — skip the separate TeddyAvatar.
 
 "use client"
 
 import { METAvatar } from "./METAvatar"
 import { TeddyAvatar } from "./TeddyAvatar"
+import { MET_ASSETS } from "./assets"
 import { PROMINENCE_BY_LEVEL } from "./types"
 import type { METExpression, TeddyBodyLanguage } from "./types"
 import type { CertificationLevel } from "@/lib/levels/config"
@@ -28,7 +31,9 @@ export function CharacterPanel({
   size = "md",
 }: CharacterPanelProps) {
   const prominence = PROMINENCE_BY_LEVEL[certLevel]
-  const showTeddy = teddyVisible && prominence.teddyPosition !== "hidden"
+  const metAsset = MET_ASSETS[metExpression]
+  const isDuo = metAsset?.isDuo === true
+  const showTeddy = !isDuo && teddyVisible && prominence.teddyPosition !== "hidden"
 
   if (layout === "chat-header") {
     return (
@@ -51,7 +56,7 @@ export function CharacterPanel({
             className="font-semibold text-sm"
             style={{ color: "var(--met-text-primary)" }}
           >
-            MET{showTeddy ? " and Teddy" : ""}
+            MET{(showTeddy || isDuo) ? " and Teddy" : ""}
           </span>
           <span
             className="text-xs"
@@ -87,7 +92,6 @@ export function CharacterPanel({
   // Default: inline
   return (
     <div className="flex items-end gap-2">
-      {/* At Explorer level, Teddy is center — show first */}
       {showTeddy && prominence.teddyPosition === "center" && (
         <TeddyAvatar
           bodyLanguage={teddyBodyLanguage}
@@ -103,7 +107,6 @@ export function CharacterPanel({
         size={size}
       />
 
-      {/* At other levels, Teddy is beside or behind */}
       {showTeddy && prominence.teddyPosition !== "center" && (
         <TeddyAvatar
           bodyLanguage={teddyBodyLanguage}

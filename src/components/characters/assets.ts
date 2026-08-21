@@ -7,12 +7,13 @@
 
 import type { METExpression, TeddyBodyLanguage } from "./types"
 
-interface AssetEntry {
+export interface AssetEntry {
   type:    "emoji" | "image"
   emoji?:  string
   url?:    string
   alt:     string
   label:   string
+  isDuo?:  boolean   // true = image contains both MET and Teddy
 }
 
 // ── MET Expression Assets ────────────────────────────────────────
@@ -50,9 +51,10 @@ export const MET_ASSETS: Record<METExpression, AssetEntry> = {
   },
   neutral: {
     type: "image",
-    url: "/characters/met-guide.svg",
-    alt: "MET in default pose",
-    label: "Neutral",
+    url: "/characters/met-teddy.svg",
+    alt: "MET and Teddy ready to explore together",
+    label: "MET and Teddy",
+    isDuo: true,
   },
 }
 

@@ -38,12 +38,13 @@ export function NavBar({ studentName, certLevel, onMenuToggle }: NavBarProps) {
           </svg>
         </button>
 
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold tracking-tight">
-            <span style={{ color: "var(--met-teal-400)" }}>MET</span>
-            {" "}Universe
-          </span>
-        </div>
+        <a href="/" className="flex items-center">
+          <img
+            src="/brand/met-universe-logo.svg"
+            alt="MET Universe"
+            className="h-8"
+          />
+        </a>
       </div>
 
       {/* Right: level badge + name */}
