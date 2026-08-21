@@ -1,9 +1,6 @@
 // src/components/characters/assets.ts
 // Asset registry for MET and Teddy character rendering.
 // © 2026 MET Scientia, LLC — all character assets are owned IP.
-//
-// Real character art delivered August 2026 via Canva AI.
-// SVGs served from public/characters/ as static files.
 
 import type { METExpression, TeddyBodyLanguage } from "./types"
 
@@ -13,10 +10,8 @@ export interface AssetEntry {
   url?:    string
   alt:     string
   label:   string
-  isDuo?:  boolean   // true = image contains both MET and Teddy
+  isDuo?:  boolean
 }
-
-// ── MET Expression Assets ────────────────────────────────────────
 
 export const MET_ASSETS: Record<METExpression, AssetEntry> = {
   caution: {
@@ -45,8 +40,8 @@ export const MET_ASSETS: Record<METExpression, AssetEntry> = {
   },
   playful: {
     type: "image",
-    url: "/characters/met-playful.svg",
-    alt: "MET kicked back, pointing playfully",
+    url: "/characters/met-laughing.svg",
+    alt: "MET laughing and pointing",
     label: "Playful",
   },
   neutral: {
@@ -57,8 +52,6 @@ export const MET_ASSETS: Record<METExpression, AssetEntry> = {
     isDuo: true,
   },
 }
-
-// ── Teddy Body Language Assets ───────────────────────────────────
 
 export const TEDDY_ASSETS: Record<TeddyBodyLanguage, AssetEntry> = {
   tail_wag: {

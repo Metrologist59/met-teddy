@@ -1,7 +1,5 @@
 // src/components/chat/ChatInterface.tsx
 // Full chat interface for MET and Teddy.
-// Connects to the /api/chat backend, displays messages with
-// character rendering and citation footers.
 
 "use client"
 
@@ -36,7 +34,6 @@ export function ChatInterface({
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Auto-scroll to bottom on new messages
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -91,35 +88,35 @@ export function ChatInterface({
 
   return (
     <div className="flex flex-col h-full max-w-[var(--met-max-chat)] mx-auto">
-      {/* Header */}
-      <div
-        className="flex-shrink-0 p-4 border-b"
-        style={{ borderColor: "rgba(42, 184, 171, 0.08)" }}
-      >
-        <CharacterPanel
-          metExpression="neutral"
-          teddyBodyLanguage={messages.length === 0 ? "tail_wag" : "sitting"}
-          certLevel={certLevel}
-          layout="chat-header"
-          size="md"
-        />
-      </div>
+      {/* Header — only visible once conversation starts */}
+      {messages.length > 0 && (
+        <div
+          className="flex-shrink-0 p-4 border-b"
+          style={{ borderColor: "rgba(42, 184, 171, 0.08)" }}
+        >
+          <CharacterPanel
+            metExpression="neutral"
+            teddyBodyLanguage="sitting"
+            certLevel={certLevel}
+            layout="chat-header"
+            size="md"
+          />
+        </div>
+      )}
 
       {/* Messages area */}
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-4"
       >
-        {/* Welcome message when empty */}
+        {/* Welcome — one duo image, shown only before first message */}
         {messages.length === 0 && (
           <div className="text-center py-12">
-            <div className="mb-4">
-              <CharacterPanel
-                metExpression="playful"
-                teddyBodyLanguage="tail_wag"
-                certLevel={certLevel}
-                layout="stacked"
-                size="lg"
+            <div className="flex justify-center mb-4">
+              <img
+                src="/characters/met-teddy.svg"
+                alt="MET and Teddy ready to explore together"
+                className="h-48 object-contain"
               />
             </div>
             <h2
@@ -137,8 +134,8 @@ export function ChatInterface({
                 : certLevel === "Investigator"
                 ? "Ready to investigate some measurements? Ask me anything about measuring, experiments, or how things work."
                 : certLevel === "Innovator"
-                ? "Let's dig into measurement science. Ask about uncertainty, repeatability, or anything you're working on."
-                : "What measurement challenge are we tackling today? Standards, uncertainty, calibration — I'm here."
+                ? "Let\u2019s dig into measurement science. Ask about uncertainty, repeatability, or anything you\u2019re working on."
+                : "What measurement challenge are we tackling today? Standards, uncertainty, calibration \u2014 I\u2019m here."
               }
             </p>
           </div>

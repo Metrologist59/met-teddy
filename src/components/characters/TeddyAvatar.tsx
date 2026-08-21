@@ -10,19 +10,18 @@ import { TEDDY_ASSETS } from "./assets"
 
 interface TeddyAvatarProps {
   bodyLanguage: TeddyBodyLanguage
-  scale?:       number  // 0.0–1.0 from prominence config
-  opacity?:     number  // 0.0–1.0
+  scale?:       number
+  opacity?:     number
   size?:        "sm" | "md" | "lg"
   className?:   string
 }
 
 const SIZES = {
-  sm: { container: 40,  emoji: "text-xl" },
-  md: { container: 60,  emoji: "text-3xl" },
-  lg: { container: 80,  emoji: "text-4xl" },
+  sm: { container: 40 },
+  md: { container: 60 },
+  lg: { container: 80 },
 }
 
-// Body language states that trigger special animations
 const ANIMATED_STATES: Partial<Record<TeddyBodyLanguage, string>> = {
   tail_wag:  "animate-wiggle",
   spinning:  "animate-spin-slow",
@@ -55,12 +54,12 @@ export function TeddyAvatar({
   if (bodyLanguage === "hidden" || scale <= 0) return null
 
   const asset = TEDDY_ASSETS[currentState]
-  const sizeConfig = SIZES[size]
   const animClass = ANIMATED_STATES[currentState] ?? ""
+  const sizeConfig = SIZES[size]
 
   return (
     <div
-      className={`relative flex items-center justify-center ${className}`}
+      className={`flex items-center justify-center ${className}`}
       style={{
         width: sizeConfig.container * scale,
         height: sizeConfig.container * scale,
@@ -73,22 +72,17 @@ export function TeddyAvatar({
       title={`Teddy — ${asset.label}`}
     >
       <div
-        className={`flex items-center justify-center rounded-full ${animClass}`}
-        style={{
-          width: "100%",
-          height: "100%",
-          background: "linear-gradient(135deg, var(--met-amber-200), var(--met-amber-400))",
-          borderRadius: "50%",
-        }}
+        className={`flex items-center justify-center ${animClass}`}
+        style={{ width: "100%", height: "100%" }}
       >
-        {asset.type === "emoji" && asset.emoji ? (
-          <span className={sizeConfig.emoji}>{asset.emoji}</span>
-        ) : asset.type === "image" ? (
+        {asset.type === "image" ? (
           <img
             src={asset.url}
             alt={asset.alt}
-            className="w-full h-full object-contain rounded-full"
+            className="w-full h-full object-contain"
           />
+        ) : asset.emoji ? (
+          <span className="text-2xl">{asset.emoji}</span>
         ) : null}
       </div>
     </div>

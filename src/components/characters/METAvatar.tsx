@@ -9,15 +9,15 @@ import { MET_ASSETS } from "./assets"
 
 interface METAvatarProps {
   expression: METExpression
-  scale?:     number        // 0.6–1.0
+  scale?:     number
   size?:      "sm" | "md" | "lg"
   className?: string
 }
 
 const SIZES = {
-  sm: { container: 48,  emoji: "text-2xl" },
-  md: { container: 72,  emoji: "text-4xl" },
-  lg: { container: 96,  emoji: "text-5xl" },
+  sm: { container: 48 },
+  md: { container: 72 },
+  lg: { container: 96 },
 }
 
 export function METAvatar({
@@ -45,11 +45,10 @@ export function METAvatar({
 
   return (
     <div
-      className={`relative flex items-center justify-center rounded-full ${className}`}
+      className={`flex items-center justify-center ${className}`}
       style={{
         width: sizeConfig.container * scale,
         height: sizeConfig.container * scale,
-        background: "linear-gradient(135deg, var(--met-teal-400), var(--met-teal-600))",
         transition: "transform 150ms ease, opacity 150ms ease",
         transform: transitioning ? "scale(0.9)" : "scale(1)",
         opacity: transitioning ? 0.7 : 1,
@@ -58,14 +57,14 @@ export function METAvatar({
       aria-label={asset.alt}
       title={`MET — ${asset.label}`}
     >
-      {asset.type === "emoji" ? (
-        <span className={sizeConfig.emoji}>{asset.emoji}</span>
-      ) : (
+      {asset.type === "image" ? (
         <img
           src={asset.url}
           alt={asset.alt}
-          className="w-full h-full object-contain rounded-full"
+          className="w-full h-full object-contain"
         />
+      ) : (
+        <span className="text-2xl">{asset.emoji}</span>
       )}
     </div>
   )

@@ -1,8 +1,5 @@
 // src/components/characters/CharacterPanel.tsx
 // Combined MET and Teddy character panel.
-// Handles prominence scaling, expression states, and layout.
-// When MET expression is a duo asset (isDuo), Teddy is already in
-// the image — skip the separate TeddyAvatar.
 
 "use client"
 
@@ -89,7 +86,6 @@ export function CharacterPanel({
     )
   }
 
-  // Default: inline
   return (
     <div className="flex items-end gap-2">
       {showTeddy && prominence.teddyPosition === "center" && (
