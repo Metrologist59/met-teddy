@@ -1,66 +1,56 @@
 {
-  "name": "MET and Teddy — Every Measurement Tells a Story",
-  "short_name": "MET & Teddy",
-  "description": "Your AI-powered Measurement Science Learning Adventure for K–12. Explore measurement with MET and his trusty companion Teddy.",
+  "name": "MET and Teddy — Measurement Science Learning Adventure",
+  "short_name": "MET and Teddy",
+  "description": "An AI-powered measurement science learning adventure for K–12 students. Explore the science of measurement with MET and Teddy!",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "any",
   "background_color": "#062C28",
   "theme_color": "#2AB8AB",
+  "orientation": "any",
   "scope": "/",
-  "id": "com.metscientia.metandteddy",
+  "id": "/",
   "categories": ["education", "kids"],
-  "lang": "en",
+  "lang": "en-US",
   "dir": "ltr",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/icons/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-maskable-192.png",
+      "src": "/icons/icon-maskable-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/icons/icon-maskable-512.png",
+      "src": "/icons/icon-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/chat-explorer.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Chat with MET and Teddy — Explorer level"
-    },
-    {
-      "src": "/screenshots/missions-catalog.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Field Missions catalog"
-    },
-    {
-      "src": "/screenshots/chat-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Chat with MET on mobile"
-    }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  ]
 }
