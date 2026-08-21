@@ -93,7 +93,7 @@ export function runQuickChecks(entry: NotebookEntry, certLevel: CertificationLev
 
   // Universal: did they include a unit?
   checks.push({
-    label: "Unit recorded",
+    label: "unit recorded",
     passed: !!(entry.unit && entry.unit.trim() !== ""),
     tip: "The number means nothing without the unit!",
   })
