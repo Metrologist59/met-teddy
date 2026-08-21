@@ -225,7 +225,7 @@ function main() {
   section("7. Notebook Quick Checks")
 
   const explorerChecks = runQuickChecks(makeEntry(), "Explorer")
-  assert("Explorer checks include unit", explorerChecks.some(c => c.name === "Unit recorded"))
+  assert("Explorer checks include unit", explorerChecks.some(c => c.label === "unit recorded"))
   assert("Good Explorer entry passes all", explorerChecks.every(c => c.passed))
 
   const badEntry = makeEntry({ unit: "", measurements: [] })
