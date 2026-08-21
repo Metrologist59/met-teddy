@@ -71,6 +71,7 @@ export function MessageBubble({
       <div className="flex-shrink-0 mt-1">
         <CharacterPanel
           metExpression={
+            context === "greeting" ? "neutral" :
             context === "safety" ? "caution" :
             context === "achievement" ? "encourage" :
             context === "humor" ? "playful" :

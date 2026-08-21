@@ -38,11 +38,15 @@ export function NavBar({ studentName, certLevel, onMenuToggle }: NavBarProps) {
           </svg>
         </button>
 
-        <a href="/" className="flex items-center">
+        <a
+          href="/"
+          className="flex items-center px-2 py-1 rounded-md"
+          style={{ background: "rgba(248, 250, 250, 0.95)" }}
+        >
           <img
             src="/brand/met-universe-logo.svg"
             alt="MET Universe"
-            className="h-8"
+            className="h-7"
           />
         </a>
       </div>

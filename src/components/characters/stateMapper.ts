@@ -159,7 +159,7 @@ export function inferContextFromResponse(
   if (/not quite|try again|almost|oops|let'?s look at that again|hmm/i.test(message)) {
     return 'mistake';
   }
-  if (/welcome|hello|hi there|hey!|good morning|good afternoon/i.test(message)) {
+  if (/welcome|hello|hi there|hey\b|good morning|good afternoon/i.test(message)) {
     return 'greeting';
   }
   if (/field mission|let'?s explore|let'?s measure|experiment|adventure|quest|let'?s try/i.test(message)) {
