@@ -25,6 +25,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "My Field Notebook", href: "/notebook",  icon: "📓", description: "Your measurement journal" },
   { label: "Badges",            href: "/badges",    icon: "🏅", description: "Earned achievements" },
   { label: "Dashboard",         href: "/dashboard", icon: "📊", description: "Progress & settings" },
+  { label: "My Account",        href: "/account",   icon: "👤", description: "Profile, license & password" },
 ]
 
 export function Sidebar({ open, onClose, certLevel, gradeBand }: SidebarProps) {

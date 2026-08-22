@@ -15,10 +15,11 @@
 //
 // Departs from that pattern in two ways specific to MET and Teddy's
 // seat-pool model:
-//   1. A "family" code UPDATES the caller's existing family license
-//      in place (created automatically as a trial at registration —
-//      O2), rather than creating a second row. This keeps every
-//      child's existing profiles.license_id pointing at a license
+//   1. A "family" or "individual" code UPDATES the caller's existing
+//      license of that type in place, rather than creating a second
+//      row — one parent has one family plan, one self-led student has
+//      one individual plan. This keeps every child's (or the
+//      student's own) profiles.license_id pointing at a license
 //      that's now upgraded, instead of orphaning them on the old row.
 //   2. A "classroom"/"school"/"district" code always INSERTS a new
 //      license row — an educator legitimately holds multiple license
@@ -34,7 +35,7 @@ import { loadProfileByAuthUserId } from "@/lib/auth/profiles"
 interface LicensePayload {
   iss: string
   sub: string
-  plan: "family" | "classroom" | "school" | "district"
+  plan: "family" | "classroom" | "school" | "district" | "individual"
   seats: number
   billing_cycle: string
   iat: number
@@ -46,23 +47,25 @@ interface LicensePayload {
   distributable?: boolean
 }
 
-const VALID_PLANS = ["family", "classroom", "school", "district"] as const
+const VALID_PLANS = ["family", "classroom", "school", "district", "individual"] as const
 
 const PLAN_LABELS: Record<string, string> = {
   family: "Family",
   classroom: "Classroom",
   school: "School",
   district: "District",
+  individual: "Individual",
 }
 
 // Which profile role is allowed to redeem which plan. A mismatch
 // means the code (or the account) is wrong, not a permissions edge
 // case worth quietly allowing.
-const PLAN_REQUIRES_ROLE: Record<string, "parent" | "educator"> = {
+const PLAN_REQUIRES_ROLE: Record<string, "parent" | "educator" | "student"> = {
   family: "parent",
   classroom: "educator",
   school: "educator",
   district: "educator",
+  individual: "student",
 }
 
 function getPublicKey(): string {
@@ -198,14 +201,15 @@ export async function POST(request: NextRequest) {
     // ── Apply the license ──
     let licenseError: string | undefined
 
-    if (payload.plan === "family") {
-      // Upgrade-in-place: find the caller's existing family license
-      // (the auto-created trial, if this is their first activation).
+    if (payload.plan === "family" || payload.plan === "individual") {
+      // Upgrade-in-place: find the caller's existing license of this
+      // type (one parent → one family plan; one self-led student →
+      // one individual plan).
       const { data: existing } = await admin
         .from("licenses")
         .select("id")
         .eq("owner_id", callerProfile.id)
-        .eq("license_type", "family")
+        .eq("license_type", payload.plan)
         .maybeSingle()
 
       if (existing) {
@@ -223,7 +227,7 @@ export async function POST(request: NextRequest) {
         licenseError = error?.message
       } else {
         const { error } = await admin.from("licenses").insert({
-          license_type: "family",
+          license_type: payload.plan,
           owner_id: callerProfile.id,
           seats_total: payload.seats,
           status: "active",
