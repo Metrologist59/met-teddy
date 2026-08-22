@@ -10,7 +10,7 @@ import { NextResponse, type NextRequest } from "next/server"
 
 const PUBLIC_EXACT = new Set([
   "/", "/login", "/register", "/coppa", "/privacy", "/terms", "/verify-email",
-  "/consent-pending",
+  "/consent-pending", "/forgot-password", "/reset-password",
 ])
 // /auth/callback and /auth/confirm must be reachable with no session —
 // that's the whole point of a confirmation link. Previously omitted,

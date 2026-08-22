@@ -3,6 +3,8 @@
 
 "use client"
 
+import { createBrowserSupabaseClient } from "@/lib/supabase/client"
+
 interface SidebarProps {
   open: boolean
   onClose: () => void
@@ -26,6 +28,15 @@ const NAV_ITEMS: NavItem[] = [
 ]
 
 export function Sidebar({ open, onClose, certLevel, gradeBand }: SidebarProps) {
+  async function handleLogout() {
+    const supabase = createBrowserSupabaseClient()
+    await supabase.auth.signOut()
+    // Full reload (not router.push) so any client-side cached state
+    // from the previous session is guaranteed to be gone, not just
+    // the auth cookie.
+    window.location.href = "/login"
+  }
+
   return (
     <>
       {/* Mobile overlay */}
@@ -74,7 +85,7 @@ export function Sidebar({ open, onClose, certLevel, gradeBand }: SidebarProps) {
           ))}
         </nav>
 
-        {/* Level indicator at bottom */}
+        {/* Level indicator + Log Out at bottom */}
         <div
           className="absolute bottom-0 left-0 right-0 p-4 border-t"
           style={{ borderColor: "rgba(42, 184, 171, 0.08)" }}
@@ -92,11 +103,24 @@ export function Sidebar({ open, onClose, certLevel, gradeBand }: SidebarProps) {
             {certLevel} · {gradeBand}
           </div>
           <div
-            className="text-xs mt-1"
+            className="text-xs mt-1 mb-3"
             style={{ color: "var(--met-text-muted)" }}
           >
             Every measurement tells a story.
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-[var(--met-surface-muted)]"
+            style={{
+              color: "var(--met-text-secondary)",
+              borderTop: "1px solid rgba(42, 184, 171, 0.08)",
+              paddingTop: "0.75rem",
+            }}
+          >
+            <span className="text-base">🚪</span>
+            Log Out
+          </button>
         </div>
       </aside>
     </>
