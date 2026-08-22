@@ -14,7 +14,12 @@
 //   4. Send the welcome email exactly once, via an atomic claim.
 //
 // Never throws — a failure here should not strand the user on an
-// error page after they've legitimately confirmed their email.
+// error page after they've legitimately confirmed their email. But
+// "never throws" must not mean "never logs": every write failure
+// below is captured and logged with context, even though execution
+// continues. Silently discarding a failed write's error is what made
+// the Aug 21 registration failure require manual SQL forensics to
+// diagnose — profile creation failed, and nothing said so.
 
 import type { User } from "@supabase/supabase-js"
 import { createAdminClient } from "@/lib/supabase/admin"
@@ -54,18 +59,27 @@ export async function finalizeConfirmation(user: User, ip: string | null): Promi
   }
 
   if (!existingProfile && meta.first_name) {
+    let result: { success: boolean; error?: string }
+
     if (flow === "parent_led") {
-      await createParentProfile(
+      result = await createParentProfile(
         admin, user.id, meta.first_name, meta.last_name ?? "", user.email ?? "", legal,
         { firstName: meta.child_first_name ?? "", grade: meta.child_grade ?? 0 },
       )
     } else if (flow === "educator_led") {
-      await createEducatorProfile(
+      result = await createEducatorProfile(
         admin, user.id, meta.first_name, meta.last_name ?? "", user.email ?? "",
         meta.school_name ?? "", legal,
       )
     } else {
-      await createStudentProfile(admin, user.id, meta.first_name, meta.grade ?? 8, legal, null)
+      result = await createStudentProfile(admin, user.id, meta.first_name, meta.grade ?? 8, legal, null)
+    }
+
+    if (!result.success) {
+      console.error(
+        "[finalizeConfirmation] profile creation failed",
+        { userId: user.id, flow, role, error: result.error },
+      )
     }
   }
 
@@ -87,9 +101,15 @@ export async function finalizeConfirmation(user: User, ip: string | null): Promi
 
     if (!existingConsent) {
       // Self-heal: the pending row from /api/register never landed.
-      await recordPendingConsent(
+      const pendingResult = await recordPendingConsent(
         admin, user.id, meta.child_first_name ?? "", meta.child_grade ?? 0,
       )
+      if (!pendingResult.success) {
+        console.error(
+          "[finalizeConfirmation] pending consent creation failed",
+          { userId: user.id, error: pendingResult.error },
+        )
+      }
     }
 
     const result = await verifyConsent(admin, user.id, ip)
