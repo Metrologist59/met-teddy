@@ -6,3 +6,4 @@
 
 export const EULA_VERSION = "1.0.0"
 export const PRIVACY_VERSION = "1.0.0"
+export const COPPA_VERSION = "1.0.0"

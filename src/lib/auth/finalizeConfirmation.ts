@@ -56,6 +56,11 @@ export async function finalizeConfirmation(user: User, ip: string | null): Promi
     eulaAcceptedAt:    meta.eula_accepted_at ?? new Date().toISOString(),
     privacyVersion:    meta.privacy_version ?? "",
     privacyAcceptedAt: meta.privacy_accepted_at ?? new Date().toISOString(),
+    // Only present in meta for self_led registrations — undefined
+    // here for parent_led/educator_led, which is correct: those two
+    // flows' create*Profile functions never read these fields anyway.
+    coppaVersion:      meta.coppa_version,
+    coppaAcceptedAt:   meta.coppa_accepted_at,
   }
 
   if (!existingProfile && meta.first_name) {

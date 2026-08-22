@@ -22,4 +22,8 @@ export interface RegistrationMetadata {
   eula_accepted_at:    string
   privacy_version:     string
   privacy_accepted_at: string
+  // Only ever set for self_led (13+) registrations — the "I certify
+  // I am 13 or older" attestation. Absent for parent_led/educator_led.
+  coppa_version?:      string
+  coppa_accepted_at?:  string
 }

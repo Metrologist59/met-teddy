@@ -49,6 +49,14 @@ export interface LegalAcceptance {
   eulaAcceptedAt:     string
   privacyVersion:     string
   privacyAcceptedAt:  string
+  // Only ever set for self_led (13+) registrations — the "I certify
+  // I am 13 or older" attestation. Undefined for parent_led/
+  // educator_led, where COPPA consent is recorded per-child in
+  // parental_consents instead (a parent consenting on a child's
+  // behalf is a different event from a student attesting their own
+  // age, so this doesn't belong on those two flows).
+  coppaVersion?:      string
+  coppaAcceptedAt?:   string
 }
 
 // ── Shared row → StudentProfile mapping ───────────────────────────
@@ -217,6 +225,8 @@ export async function createStudentProfile(
     eula_accepted_at:    legal.eulaAcceptedAt,
     privacy_version:     legal.privacyVersion,
     privacy_accepted_at: legal.privacyAcceptedAt,
+    coppa_version:       legal.coppaVersion ?? null,
+    coppa_accepted_at:   legal.coppaAcceptedAt ?? null,
   }, { onConflict: "id" })
 
   if (error) return { success: false, error: error.message }

@@ -17,7 +17,7 @@ import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { getSiteOrigin, firstIp, safeNext } from "@/lib/http/request"
 import { isRateLimited } from "@/lib/http/rateLimit"
-import { EULA_VERSION, PRIVACY_VERSION } from "@/lib/legal"
+import { EULA_VERSION, PRIVACY_VERSION, COPPA_VERSION } from "@/lib/legal"
 import {
   createParentProfile,
   createStudentProfile,
@@ -114,6 +114,8 @@ export async function POST(req: NextRequest) {
     eula_accepted_at:    now,
     privacy_version:     privacyVersion,
     privacy_accepted_at: now,
+    coppa_version:       flow === "self_led" ? COPPA_VERSION : undefined,
+    coppa_accepted_at:   flow === "self_led" ? now : undefined,
   }
 
   // Cookie-bound server client — NOT a bare anon client. @supabase/ssr
@@ -162,6 +164,7 @@ export async function POST(req: NextRequest) {
     eulaAcceptedAt: now,
     privacyVersion,
     privacyAcceptedAt: now,
+    ...(flow === "self_led" ? { coppaVersion: COPPA_VERSION, coppaAcceptedAt: now } : {}),
   }
 
   if (flow === "parent_led") {
