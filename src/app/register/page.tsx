@@ -26,6 +26,7 @@ export default function RegisterPage() {
   const [grade, setGrade] = useState<number>(0)
 
   const [termsAccepted, setTermsAccepted] = useState(false)
+  const [ageAttested, setAgeAttested] = useState(false)
 
   // Form fields
   const [firstName, setFirstName] = useState("")
@@ -51,6 +52,10 @@ export default function RegisterPage() {
     setError(null)
     if (!termsAccepted) {
       setError("Please accept the Terms of Service and Privacy Policy to continue.")
+      return
+    }
+    if (flow === "self_led" && !ageAttested) {
+      setError("Please confirm you are 13 years of age or older to continue.")
       return
     }
     setStep("form")
@@ -100,6 +105,7 @@ export default function RegisterPage() {
           eulaVersion: EULA_VERSION,
           privacyAccepted: true,
           privacyVersion: PRIVACY_VERSION,
+          ageAttested,
         }),
       })
 
@@ -162,6 +168,22 @@ export default function RegisterPage() {
         {step === "terms" && (
           <div className="met-card p-6">
             <TermsAcceptance checked={termsAccepted} onChange={setTermsAccepted} />
+
+            {flow === "self_led" && (
+              <label className="flex items-start gap-3 cursor-pointer mt-4">
+                <input
+                  type="checkbox"
+                  checked={ageAttested}
+                  onChange={(e) => setAgeAttested(e.target.checked)}
+                  className="mt-1 w-4 h-4 accent-[#2AB8AB]"
+                />
+                <span className="text-sm" style={{ color: "var(--met-text-secondary)" }}>
+                  I certify that I am 13 years of age or older. MET and Teddy
+                  accounts for students under 13 must be created by a parent
+                  or guardian.
+                </span>
+              </label>
+            )}
 
             {error && (
               <div

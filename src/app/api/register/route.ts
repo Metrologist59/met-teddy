@@ -39,6 +39,7 @@ const bodySchema = z.object({
   eulaVersion:      z.literal(EULA_VERSION),
   privacyAccepted:  z.literal(true),
   privacyVersion:   z.literal(PRIVACY_VERSION),
+  ageAttested:      z.boolean().optional().default(false),
   next:             z.string().optional(),
 })
 
@@ -72,6 +73,18 @@ export async function POST(req: NextRequest) {
   if (flow === "self_led" && grade <= 7) {
     return NextResponse.json(
       { error: "Students under 13 need a parent or guardian to create their account." },
+      { status: 400 },
+    )
+  }
+  // Same reasoning: the client-side checkbox is equally bypassable.
+  // A self_led registration must carry an explicit, affirmative
+  // attestation, not merely have avoided the grade<=7 branch above —
+  // the grade selector and the attestation are two independent
+  // signals, and both are enforced server-side rather than trusted
+  // from the client.
+  if (flow === "self_led" && !body.ageAttested) {
+    return NextResponse.json(
+      { error: "Please confirm you are 13 years of age or older to continue." },
       { status: 400 },
     )
   }

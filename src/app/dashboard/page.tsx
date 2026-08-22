@@ -8,7 +8,6 @@ import { AppShell } from "@/components/layout/AppShell"
 import { ParentDashboard } from "@/components/dashboard/ParentDashboard"
 import { ClassroomView } from "@/components/dashboard/ClassroomView"
 import { LevelOverride } from "@/components/dashboard/LevelOverride"
-import { LicenseCodeCard } from "@/components/dashboard/LicenseCodeCard"
 import type { StudentProgressData } from "@/components/dashboard/StudentProgressCard"
 
 // TODO: Load from authenticated profile
@@ -71,36 +70,26 @@ export default function DashboardPage() {
         )}
 
         {!overrideData && DEMO_ROLE === "parent" && (
-          <>
-            <ParentDashboard
-              student={DEMO_CHILD}
-              notebookEntries={[]}
-              recentActivity={[
-                { date: new Date().toISOString(), action: "Completed mission: Measure Teddy!" },
-                { date: new Date().toISOString(), action: "Created notebook entry" },
-                { date: new Date(Date.now() - 86400000).toISOString(), action: "Earned badge: Teddy Measured!" },
-                { date: new Date(Date.now() - 86400000).toISOString(), action: "Started mission: Heavy or Light?" },
-              ]}
-              onLevelOverride={() => setOverrideStudent(DEMO_CHILD.studentId)}
-            />
-            <div className="mt-6">
-              <LicenseCodeCard role="parent" />
-            </div>
-          </>
+          <ParentDashboard
+            student={DEMO_CHILD}
+            notebookEntries={[]}
+            recentActivity={[
+              { date: new Date().toISOString(), action: "Completed mission: Measure Teddy!" },
+              { date: new Date().toISOString(), action: "Created notebook entry" },
+              { date: new Date(Date.now() - 86400000).toISOString(), action: "Earned badge: Teddy Measured!" },
+              { date: new Date(Date.now() - 86400000).toISOString(), action: "Started mission: Heavy or Light?" },
+            ]}
+            onLevelOverride={() => setOverrideStudent(DEMO_CHILD.studentId)}
+          />
         )}
 
         {!overrideData && DEMO_ROLE === "educator" && (
-          <>
-            <ClassroomView
-              classroomName="Mrs. Chen's 2nd Grade — Measurement Explorers"
-              students={DEMO_CLASSROOM}
-              onSelectStudent={setSelectedStudent}
-              onOverrideLevel={setOverrideStudent}
-            />
-            <div className="mt-6">
-              <LicenseCodeCard role="educator" />
-            </div>
-          </>
+          <ClassroomView
+            classroomName="Mrs. Chen's 2nd Grade — Measurement Explorers"
+            students={DEMO_CLASSROOM}
+            onSelectStudent={setSelectedStudent}
+            onOverrideLevel={setOverrideStudent}
+          />
         )}
       </div>
     </AppShell>
